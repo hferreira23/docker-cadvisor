@@ -4,7 +4,7 @@ FROM golang:alpine AS build-env
 
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
-ENV GO_FLAGS="-tags=libpfm,netgo,libipmctl"
+ENV GO_TAGS netgo
 
 ADD env.sh /env.sh
 
@@ -38,7 +38,7 @@ RUN chmod +x /env.sh && \
 
 #Checkout version if set
 WORKDIR /go/src/github.com/google/cadvisor
-RUN make clean-all build
+RUN GO_FLAGS=$GO_TAGS make clean-all build
 
 FROM alpine:edge
 LABEL maintainer="Hugo Ferreira"
