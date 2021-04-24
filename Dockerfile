@@ -6,10 +6,7 @@ ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
 ENV GO_FLAGS="-tags=libpfm,netgo,libipmctl"
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories && \
-    echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories && \
-    apk update && \
-    apk --update add libc6-compat device-mapper findutils zfs build-base \
+RUN apk add libc6-compat device-mapper findutils zfs build-base \
     linux-headers go python3 bash git wget cmake pkgconfig ndctl-dev thin-provisioning-tools && \
     echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
     rm -rf /var/cache/apk/*
