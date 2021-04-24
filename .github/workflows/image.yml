@@ -1,4 +1,4 @@
-name: gitea_ci
+name: cadvisor
 
 on:
   pull_request:
