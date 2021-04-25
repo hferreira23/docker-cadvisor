@@ -33,12 +33,13 @@ RUN git clone -b v02.00.00.3871 https://github.com/intel/ipmctl/ && \
 
 RUN git clone https://github.com/google/cadvisor.git /go/src/github.com/google/cadvisor
 
+WORKDIR /
 RUN chmod +x /env.sh && \
     ./env.sh
 
 #Checkout version if set
 WORKDIR /go/src/github.com/google/cadvisor
-RUN GO_FLAGS=$GO_TAGS make clean-all build
+RUN make build
 
 FROM alpine:edge
 LABEL maintainer="Hugo Ferreira"
@@ -48,7 +49,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repo
     apk update && \
     apk upgrade --available && \
     apk --update add \
-    bash libc6-compat device-mapper findutils zfs ndctl thin-provisioning-tools && \
+    bash libc6-compat device-mapper findutils ndctl thin-provisioning-tools && \
+    apk --no-cache add zfs || true && \
     echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
     sync && \
     rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/cache/distfiles/*
