@@ -2,6 +2,7 @@
 #Build stage
 FROM golang:alpine AS build-env
 
+ARG TARGETARCH
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
 ENV GO_TAGS netgo
