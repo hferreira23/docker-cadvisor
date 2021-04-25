@@ -44,12 +44,14 @@ RUN make build
 FROM alpine:edge
 LABEL maintainer="Hugo Ferreira"
 
+ENV TZ=Europe/Lisbon
+
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories && \
     echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories && \
     apk update && \
     apk upgrade --available && \
     apk --update add \
-    bash libc6-compat device-mapper findutils ndctl thin-provisioning-tools && \
+    bash libc6-compat device-mapper findutils ndctl thin-provisioning-tools tzdata && \
     apk --no-cache add zfs || true && \
     echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
     sync && \
