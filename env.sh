@@ -7,5 +7,6 @@ if [ -f /usr/local/lib/libipmctl.so ]
 then
   export GO_TAGS=${GO_TAGS},libipmctl
 fi
+echo $TARGETARCH
 export GO_FLAGS="-tags=${GO_TAGS}"
 echo $GO_FLAGS
