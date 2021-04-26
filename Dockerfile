@@ -40,7 +40,7 @@ RUN chmod +x /env.sh && \
 
 #Checkout version if set
 WORKDIR /go/src/github.com/google/cadvisor
-RUN make build
+RUN ./build/build.sh $GOARCH
 
 FROM alpine:edge
 LABEL maintainer="Hugo Ferreira"
