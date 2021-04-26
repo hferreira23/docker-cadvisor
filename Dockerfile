@@ -1,6 +1,6 @@
 ###################################
 #Build stage
-FROM golang:1.15-alpine AS build-env
+FROM alpine:3.12 AS build-env
 
 ARG TARGETARCH
 ARG GOPROXY
@@ -10,7 +10,7 @@ ENV GO_TAGS netgo
 
 ADD env.sh /env.sh
 
-RUN apk --no-cache add libc6-compat device-mapper findutils build-base linux-headers bash git wget cmake pkgconfig ndctl-dev make python3 && \
+RUN apk --no-cache add libc6-compat device-mapper findutils build-base linux-headers bash go git wget cmake pkgconfig ndctl-dev make python3 && \
     apk --no-cache add zfs || true && \
     apk --no-cache add thin-provisioning-tools --repository http://dl-3.alpinelinux.org/alpine/edge/main/ && \
     echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
