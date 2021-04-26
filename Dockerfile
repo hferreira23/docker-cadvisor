@@ -37,11 +37,14 @@ RUN git clone https://github.com/google/cadvisor.git /go/src/github.com/google/c
 
 WORKDIR /
 RUN chmod +x /env.sh && \
-    ./env.sh
-
-#Checkout version if set
-WORKDIR /go/src/github.com/google/cadvisor
-RUN make build
+    ./env.sh && \
+    cd /go/src/github.com/google/cadvisor && \
+    go get -u github.com/Shopify/sarama && \
+    go mod vendor && \
+    go mod tidy && \
+    go get -u github.com/Shopify/sarama && \
+    ./build/assets.sh && \
+    ./build/build.sh ${GOARCH}
 
 FROM alpine:edge
 LABEL maintainer="Hugo Ferreira"
