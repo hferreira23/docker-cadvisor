@@ -1,6 +1,6 @@
 ###################################
 #Build stage
-FROM alpine:3.12 AS build-env
+FROM reg.zcube.kr/docker/cadvisor:builder AS build-env
 
 ARG TARGETARCH
 ARG GOPROXY
