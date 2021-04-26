@@ -4,6 +4,7 @@ FROM golang:alpine AS build-env
 
 ARG TARGETARCH
 ARG GOPROXY
+ENV GOARCH=$TARGETARCH
 ENV GOPROXY ${GOPROXY:-direct}
 ENV GO_TAGS netgo
 
