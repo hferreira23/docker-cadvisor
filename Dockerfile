@@ -43,7 +43,8 @@ RUN chmod +x /env.sh && \
 ENV GO_FLAGS=${GO_TAGS}
 
 WORKDIR /go/src/github.com/google/cadvisor
-    ./build/assets.sh && \
+
+RUN ./build/assets.sh && \
     ./build/build.sh ${GOARCH}
 
 FROM alpine:edge
