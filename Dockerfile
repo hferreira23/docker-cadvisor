@@ -7,11 +7,11 @@ ARG GOPROXY
 ENV GOARCH=$TARGETARCH
 ENV GOPROXY ${GOPROXY:-direct}
 #ENV GO_TAGS netgo
-ENV CGO_ENABLED 1
+ENV CGO_ENABLED 0
 
 ADD env.sh /env.sh
 
-RUN apk --no-cache add libc6-compat device-mapper findutils build-base linux-headers bash go git wget cmake pkgconfig ndctl-dev make python3 && \
+RUN apk --no-cache add libc6-compat device-mapper findutils build-base linux-headers bash git wget cmake pkgconfig ndctl-dev make python3 && \
     apk --no-cache add zfs || true && \
     apk --no-cache add thin-provisioning-tools --repository http://dl-3.alpinelinux.org/alpine/edge/main/ && \
     echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
@@ -38,10 +38,13 @@ RUN git clone https://github.com/google/cadvisor.git /go/src/github.com/google/c
 
 WORKDIR /
 RUN chmod +x /env.sh && \
-    ./env.sh && \
-    cd /go/src/github.com/google/cadvisor && \
+    ./env.sh
+
+ENV GO_FLAGS=${GO_TAGS}
+
+WORKDIR /go/src/github.com/google/cadvisor
     ./build/assets.sh && \
-    GO_FLAGS="-tags=${GO_TAGS}" ./build/build.sh ${GOARCH}
+    ./build/build.sh ${GOARCH}
 
 FROM alpine:edge
 LABEL maintainer="Hugo Ferreira"
