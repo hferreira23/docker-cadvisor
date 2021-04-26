@@ -1,6 +1,6 @@
 ###################################
 #Build stage
-FROM golang:alpine AS build-env
+FROM golang:1.15-alpine AS build-env
 
 ARG TARGETARCH
 ARG GOPROXY
@@ -39,12 +39,8 @@ WORKDIR /
 RUN chmod +x /env.sh && \
     ./env.sh && \
     cd /go/src/github.com/google/cadvisor && \
-    go get -u github.com/Shopify/sarama && \
-    go mod vendor && \
-    go mod tidy && \
-    go get -u github.com/Shopify/sarama && \
     ./build/assets.sh && \
-    ./build/build.sh ${GOARCH}
+    GO_FLAGS="-tags=${GO_TAGS}" ./build/build.sh ${GOARCH}
 
 FROM alpine:edge
 LABEL maintainer="Hugo Ferreira"
