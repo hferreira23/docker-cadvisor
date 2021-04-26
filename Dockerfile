@@ -1,12 +1,13 @@
 ###################################
 #Build stage
-FROM reg.zcube.kr/docker/cadvisor:builder AS build-env
+FROM golang:1.15-alpine AS build-env
 
 ARG TARGETARCH
 ARG GOPROXY
 ENV GOARCH=$TARGETARCH
 ENV GOPROXY ${GOPROXY:-direct}
 ENV GO_TAGS netgo
+ENV CGO_ENABLED 1
 
 ADD env.sh /env.sh
 
