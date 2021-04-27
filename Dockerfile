@@ -33,7 +33,9 @@ RUN git clone -b v02.00.00.3820 https://github.com/intel/ipmctl/ && \
   
 ADD env.sh /env.sh
 
-run chmod +x /env.sh \
+RUN git clone https://github.com/google/cadvisor.git /go/src/github.com/google/cadvisor
+
+RUN chmod +x /env.sh \
  && ./env.sh \
  && cd $GOPATH/src/github.com/google/cadvisor \
  && GOARM=${GOARM} GO111MODULE=on ./build/build.sh ${GOARCH} || true \
