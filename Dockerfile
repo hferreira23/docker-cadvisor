@@ -1,5 +1,6 @@
 FROM alpine:3.13 AS build
 
+ARG TARGETARCH
 ENV GOROOT /usr/lib/go
 ENV GOPATH /go
 ENV GO_TAGS netgo
@@ -35,7 +36,7 @@ ADD env.sh /env.sh
 run chmod +x /env.sh \
  && ./env.sh \
  && cd $GOPATH/src/github.com/google/cadvisor \
- && GO111MODULE=on ./build/build.sh || true \
+ && GOARM=${GOARM} GO111MODULE=on ./build/build.sh ${GOARCH} || true \
  && mv -f cadvisor /cadvisor || true
 
 FROM alpine:3.13
